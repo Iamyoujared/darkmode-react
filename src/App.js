@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import style from "styled-theming";
+import { useTheme } from "./useTheme";
 
-function App() {
+const getBackground = style("mode", {
+  light: "#EEE",
+  dark: "#111",
+});
+
+const getFackground = style("mode", {
+  light: "#111",
+  dark: "#EEE",
+});
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${getBackground};
+    color: ${getFackground};
+  }
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  letter-spacing: 2px;
+`;
+
+const Button = styled.button`
+  margin: auto;
+  display: block;
+  padding: 12px 30px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const App = () => {
+  const theme = useTheme();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Title>DARKMODE</Title>
+      <Button
+        onClick={() =>
+          theme.setTheme(
+            theme.mode === "dark" ? { mode: "light" } : { mode: "dark" }
+          )
+        }
+      >
+        Toggle Mode
+      </Button>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
